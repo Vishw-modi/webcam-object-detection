@@ -66,17 +66,27 @@ const WebcamCapture = () => {
       context.lineWidth = 2;
       context.strokeRect(x, y, width, height);
 
-      // Draw label text
+      // Draw a background rectangle for the text
+      const textWidth = context.measureText(text).width;
+      const padding = 5; // Padding around the text
+      context.fillStyle = "rgba(0, 0, 0, 0.7)"; // Semi-transparent background
+      context.fillRect(
+        x,
+        y - 20 - padding,
+        textWidth + padding * 2,
+        20 + padding * 2
+      ); // Rectangle for text
+
       context.fillStyle = "red";
-      context.font = "16px Arial";
-      context.fillText(text, x, y > 10 ? y - 5 : 10);
+      context.font = "24px Arial Bold";
+      context.fillText(text, x + padding, y - padding - 10);
     });
   };
 
   useEffect(() => {
     if (model && isVideoOn) {
-      const interval = setInterval(detectObjects, 100); // Run detection every 100ms
-      return () => clearInterval(interval); // Cleanup on unmount
+      const interval = setInterval(detectObjects, 100);
+      return () => clearInterval(interval);
     }
   }, [model, isVideoOn]);
 
